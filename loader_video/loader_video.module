@@ -1,0 +1,175 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: hautruong
+ * Date: 26/09/2016
+ * Time: 17:05
+ */
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function loader_video_field_formatter_info() {
+  return array(
+    'videojs' => array(
+      'label' => t('Video.js : HTML5 Video Player'),
+      'field types' => array('file', 'media', 'link_field'),
+      'description' => t('Display a video file as an HTML5-compatible with Flash-fallback video player.'),
+      'settings' => array(
+        'width' => NULL,
+        'height' => NULL,
+        'posterimage_field' => NULL,
+        'posterimage_style' => NULL,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function loader_video_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  if ($display['type'] !== 'videojs') {
+    return array();
+  }
+  if (empty($items)) {
+    return array();
+  }
+
+  if ($field['type'] == 'link_field') {
+    //for field type of 'link_field' do things differently
+  }
+
+  $settings = $display['settings'];
+  $attributes = array();
+  if (!empty($settings['width']) && !empty($settings['height'])) {
+    $attributes['width'] = intval($settings['width']);
+    $attributes['height'] = intval($settings['height']);
+  }
+
+
+  list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
+  return array(
+    array(
+      '#theme' => 'videojs',
+      '#items' => $items,
+      '#player_id' => 'videojs-' . $id . '-' . str_replace('_', '-', $instance['field_name']),
+      '#attached' => videojs_add(FALSE),
+      '#entity' => $entity,
+      '#entity_type' => $entity_type,
+      '#attributes' => $attributes,
+      '#posterimage_style' => !empty($settings['posterimage_style']) ? $settings['posterimage_style'] : NULL,
+    ),
+  );
+}
+
+function videojs_theme() {
+  return array(
+    'videojs' => array(
+      'variables' => array(
+        'items' => NULL,
+        'player_id' => NULL,
+        'attributes' => NULL,
+        'entity' => NULL,
+        'entity_type' => NULL,
+        'posterimage_style' => NULL
+      ),
+      'template' => 'theme/videojs',
+    )
+  );
+}
+
+/**
+ * Implements hook_field_info().
+ */
+function loader_video_field_info() {
+  return array(
+    'field_loader_video' => array(
+      'label' => t('Video Player'),
+      'description' => t('field containing info about one of the layers part of the Rev Slider'),
+      'settings' => array('max_length' => 255),
+      'instance_settings' => array(
+        'text_processing' => 0,
+      ),
+      'default_widget' => 'field_loader_video_widget',
+      'default_formatter' => 'field_loader_video_formatter',
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function loader_video_field_widget_info() {
+  return array(
+    'field_loader_video_widget' => array(
+      'label' => t('Revolution Slide Layer'),
+      'field types' => array('field_loader_video'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function loader_video_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  $element += array(
+    '#type' => $instance['widget']['type'],
+    '#default_value' => isset($items[$delta]) ? $items[$delta] : '',
+  );
+  return $element;
+}
+
+/**
+ * Implements hook_element_info().
+ */
+function loader_video_element_info() {
+  $elements = array();
+  $elements['field_loader_video_widget'] = array(
+    '#input' => TRUE,
+    '#process' => array('rev_loader_player_field_process')
+  );
+  return $elements;
+}
+
+function rev_loader_player_field_process($element, $form_state, $complete_form) {
+  $element['layer_header'] = array(
+    'layer_header' => array(
+      '#type' => 'markup',
+      '#weight' => 0,
+      '#markup' => '<p>' . t('Slide Layer ' . ($element['#delta'] + 1)) . '</p>',
+    ),
+  );
+  $element['image'] = array(
+    '#title' => t('Image'),
+    '#type' => 'managed_file',
+    '#weight' => 8,
+    '#description' => t('Upload a file, allowed extensions: jpg, jpeg, png, gif'),
+    '#default_value' => isset($element['#value']['image']) ? $element['#value']['image'] : '',
+    '#upload_location' => REV_SLIDER_DEST . '/img',
+    '#states' => array(
+      'visible' => array(
+//                ':input[title="content_choice_'.$element['#delta'].'"]' => array('value' => 'image'),
+        ':input[name="content_choice[' . $element['#delta'] . ']"]' => array('value' => 'image'),
+      ),
+    ),
+    '#upload_validators' => array(
+      'file_validate_extensions' => array('jpg jpeg png gif'),
+      // Pass the maximum file size in bytes
+      'file_validate_size' => array(MAX_SIZE_LIMIT_DS * 1024 * 1024),
+    ),
+
+  );
+  // To prevent an extra required indicator, disable the required flag on the
+  // base element since all the sub-fields are already required if desired.
+  $element['#required'] = FALSE;
+
+  return $element;
+}
+
+/**
+ * Implements hook_field_is_empty().
+ */
+function loader_video_field_is_empty($item, $field) {
+  return !isset($item);
+}

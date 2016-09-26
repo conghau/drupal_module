@@ -1,0 +1,59 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: hautruong
+ * Date: 26/09/2016
+ * Time: 17:05
+ */
+
+function loader_video_field_schema($field) {
+  $schema = array();
+  $schema['columns']['url'] = array(
+    'type' => 'varchar',
+    'length' => 50,
+    'not null' => FALSE
+  );
+  $schema['columns']['class'] = array(
+    'type' => 'varchar',
+    'length' => 50,
+    'not null' => FALSE
+  );
+
+  $schema['columns']['thumbnail'] = array(
+    'description' => 'The {file_managed}.fid being referenced in this field.',
+    'type' => 'int',
+    'not null' => FALSE,
+    'unsigned' => TRUE,
+  );
+
+  $schema['foreign keys'] = array(
+    'image_fid' => array(
+      'table' => 'file_managed',
+      'columns' => array('image' => 'fid'),
+    ),
+  );
+  $schema['indexes'] = array(
+    'url' => array('url'),
+  );
+  return $schema;
+}
+
+function loader_video_uninstall() {
+  //remove fields from content types
+  foreach(_get_bundles_for_field_type('CUSTOM-FIELD-TYPE') as $bundle){
+    field_attach_delete_bundle('node', $bundle);
+    drupal_set_message('uninstalled field for bundle:'.$bundle);
+  }
+
+  //remove tables
+  drupal_uninstall_schema('CUSTOM-FIELD-SCHEMA');
+
+  // remove variables
+  db_query("DELETE FROM {variable} WHERE name LIKE 'CUSTOM-FIELD-SCHEMA_%'");
+
+  // Remove assets.
+//    file_unmanaged_delete_recursive(file_default_scheme() . '://slider');
+
+  // Clear the cache.
+  field_info_cache_clear();
+}

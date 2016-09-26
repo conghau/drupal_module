@@ -1,0 +1,49 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: hautruong
+ * Date: 26/09/2016
+ * Time: 10:46
+ */
+
+
+/**
+ * Implements hook_field_schema().
+ */
+function Identity_card_field_schema($field) {
+  $columns = array(
+    'full_name' => array(
+      'type' => 'varchar',
+      'length' => '32',
+      'not null' => FALSE,
+    ),
+    'card_id' => array(
+      'type' => 'varchar',
+      'length' => '32',
+      'not null' => FALSE,
+    ),
+    'card_image1' => array(
+      'type' => 'varchar',
+      'length' => '500',
+      'not null' => TRUE,
+    ),
+    'card_image2' => array(
+      'type' => 'varchar',
+      'length' => '500',
+      'not null' => TRUE,
+    ),
+    'card_note' => array(
+      'type' => 'varchar',
+      'length' => '500',
+      'not null' => TRUE,
+    ),
+  );
+  $indexes = array(
+    'full_name' => array('full_name'),
+    'card_id' => array('card_id'),
+  );
+  return array(
+    'columns' => $columns,
+    'indexes' => $indexes,
+  );
+}

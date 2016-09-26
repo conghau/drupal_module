@@ -1,0 +1,174 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: hautruong
+ * Date: 26/09/2016
+ * Time: 10:41
+ */
+
+/**
+ * Implement hook_field_info
+ */
+function Identity_card_field_info() {
+  return array(
+    // We name our field as the associative name of the array.
+    'field_identity_card' => array(
+      'label' => t('Field Identity Card'),
+      'description' => t('Field Identity Card.'),
+      'default_widget' => 'identity_card_widget_default',
+      'default_formatter' => 'identity_card_formatter_default',
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_is_empty().
+ */
+function Identity_card_field_is_empty($item, $field) {
+  $temp = array_keys($field['columns']);
+  $key = array_shift($temp);
+  return empty($item[$key]);
+}
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function Identity_card_field_widget_info() {
+  return array(
+    'identity_card_widget_default' => array(
+      'label' => t('ID Card widget'),
+      'field types' => array('field_identity_card'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function Identity_card_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  dsm($items);
+  dsm($form);
+  dsm($form_state);
+  dsm($instance);
+  $widget = $element;
+  $widget['#delta'] = $delta;
+  switch ($instance['widget']['type']) {
+    case 'identity_card_widget_default' :
+      $element['identity_card'] = array(
+        '#type' => 'fieldset',
+        '#title' => $element['#title'],
+        '#tree' => TRUE,
+      );
+      $element['identity_card']['full_name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Card Name'),
+        '#default_value' => isset($items[$delta]['name']) ? $items[$delta]['name'] : '',
+        '#required' => $element['#required'],
+        '#size' => 30,
+        '#attributes' => array('maxlength' => 30),
+        '#weight' => 1,
+      );
+      $element['identity_card']['card_id'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Card number'),
+        '#default_value' => isset($items[$delta]['card_id']) ? $items[$delta]['card_id'] : '',
+        '#required' => $element['#required'],
+        '#size' => 12,
+        '#attributes' => array('maxlength' => 12),
+        '#weight' => 2,
+      );
+      $element['identity_card']['card_image1'] = array(
+//        '#name' => 'files[' . implode('_', $element['#parents']) . ']',
+        '#type' => 'file',
+        '#title' => t('Choose a file'),
+        '#title_display' => 'before',
+        '#size' => 22,
+        '#theme_wrappers' => array(),
+        '#weight' => 3,
+      );
+      $element['identity_card']['card_image2'] = array(
+//        '#name' => 'files[' . implode('_', $element['#parents']) . ']',
+        '#type' => 'file',
+        '#title' => t('Image after'),
+        '#title_display' => 'before',
+        '#size' => 22,
+        '#theme_wrappers' => array(),
+        '#weight' => 4,
+      );
+      $element['identity_card']['card_note'] = array(
+        '#type' => 'textarea',
+        '#title' => t('Note'),
+        '#size' => 10,
+        '#default_value' => isset($items[$delta]['Note']) ? $items[$delta]['Note'] : '',
+        '#attributes' => array('maxlength' => 10),
+        '#weight' => 5,
+      );
+      break;
+  }
+  dsm($element);
+  return $element;
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function Identity_card_field_formatter_info() {
+  return array(
+    // This formatter just displays the hex value in the color indicated.
+    'identity_card_formatter_default' => array(
+      'label' => t('Simple ID Card formatter'),
+      'field types' => array('field_identity_card'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function Identity_card_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+  switch ($display['type']) {
+    case 'identity_card_formatter_default' :
+      foreach ($items as $delta => $item) {
+        if (isset($item['number'])) {
+          $element[$delta]['#markup'] = 'ID card number : ' . $item['card_id'] . '<br>Card name : ' . $item['full_name'] . '<br>Note : ' . $item['card_note'];
+        }
+      }
+      break;
+  }
+  return $element;
+}
+
+/**
+ * Implements hook_field_settings_form().
+ */
+function Identity_card_field_settings_form($field, $instance, $has_data) {
+  $settings = $field['settings'];
+  // Add your global settings fields here
+  $form = array();
+  return $form;
+}
+
+/**
+ * Implements hook_field_instance_settings_form().
+ */
+function Identity_card_field_instance_settings_form($field, $instance) {
+  $settings = $instance['settings'];
+  // Add your instance settings fields here.
+  $form = array();
+  return $form;
+}
+
+/**
+ * Implements hook_field_presave().
+ */
+function Identity_card_field_presave($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  dsm($items);
+  foreach ($items as $delta => $item) {
+    if (isset($item['identity_card']['name'])) {
+      $items[$delta]['full_name'] = $item['identity_card']['full_name'];
+      $items[$delta]['card_id'] = $item['identity_card']['card_id'];
+      $items[$delta]['card_note'] = $item['identity_card']['card_note'];
+    }
+  }
+}

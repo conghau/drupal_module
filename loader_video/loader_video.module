@@ -6,170 +6,254 @@
  * Time: 17:05
  */
 
+define('LOADER_IMAGE_MAX_SIZE_LIMIT_DS', 8);
+define('LOADER_VIDEO_IMAGE_DEST', 'loader_video_public');
+
 /**
  * Implements hook_field_formatter_info().
  */
 function loader_video_field_formatter_info() {
-  return array(
-    'videojs' => array(
-      'label' => t('Video.js : HTML5 Video Player'),
-      'field types' => array('file', 'media', 'link_field'),
-      'description' => t('Display a video file as an HTML5-compatible with Flash-fallback video player.'),
-      'settings' => array(
-        'width' => NULL,
-        'height' => NULL,
-        'posterimage_field' => NULL,
-        'posterimage_style' => NULL,
-      ),
-    ),
-  );
+    return array(
+        'videojs' => array(
+            'label' => t('Video.js : HTML5 Video Player'),
+            'field types' => array('file', 'media', 'link_field', 'field_loader_video'),
+            'description' => t('Display a video file as an HTML5-compatible with Flash-fallback video player.'),
+            'settings' => array(
+                'width' => NULL,
+                'height' => NULL,
+                'posterimage_field' => NULL,
+                'posterimage_style' => NULL,
+            ),
+        ),
+    );
 }
 
 /**
  * Implements hook_field_formatter_view().
  */
 function loader_video_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-  if ($display['type'] !== 'videojs') {
-    return array();
-  }
-  if (empty($items)) {
-    return array();
-  }
+    if ($display['type'] !== 'videojs') {
+        return array();
+    }
+    if (empty($items)) {
+        return array();
+    }
 
-  if ($field['type'] == 'link_field') {
-    //for field type of 'link_field' do things differently
-  }
+    if ($field['type'] == 'link_field') {
+        //for field type of 'link_field' do things differently
+    }
 
-  $settings = $display['settings'];
-  $attributes = array();
-  if (!empty($settings['width']) && !empty($settings['height'])) {
-    $attributes['width'] = intval($settings['width']);
-    $attributes['height'] = intval($settings['height']);
-  }
+    $settings = $display['settings'];
+    $attributes = array();
+    if (!empty($settings['width']) && !empty($settings['height'])) {
+        $attributes['width'] = intval($settings['width']);
+        $attributes['height'] = intval($settings['height']);
+    }
 
 
-  list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
-  return array(
-    array(
-      '#theme' => 'videojs',
-      '#items' => $items,
-      '#player_id' => 'videojs-' . $id . '-' . str_replace('_', '-', $instance['field_name']),
-      '#attached' => videojs_add(FALSE),
-      '#entity' => $entity,
-      '#entity_type' => $entity_type,
-      '#attributes' => $attributes,
-      '#posterimage_style' => !empty($settings['posterimage_style']) ? $settings['posterimage_style'] : NULL,
-    ),
-  );
+    list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
+    return array(
+        array(
+            '#theme' => 'videojs',
+            '#items' => $items,
+            '#player_id' => 'videojs-' . $id . '-' . str_replace('_', '-', $instance['field_name']),
+            '#attached' => videojs_add(FALSE),
+            '#entity' => $entity,
+            '#entity_type' => $entity_type,
+            '#attributes' => $attributes,
+            '#posterimage_style' => !empty($settings['posterimage_style']) ? $settings['posterimage_style'] : NULL,
+        ),
+    );
 }
 
 function videojs_theme() {
-  return array(
-    'videojs' => array(
-      'variables' => array(
-        'items' => NULL,
-        'player_id' => NULL,
-        'attributes' => NULL,
-        'entity' => NULL,
-        'entity_type' => NULL,
-        'posterimage_style' => NULL
-      ),
-      'template' => 'theme/videojs',
-    )
-  );
+    return array(
+        'videojs' => array(
+            'variables' => array(
+                'items' => NULL,
+                'player_id' => NULL,
+                'attributes' => NULL,
+                'entity' => NULL,
+                'entity_type' => NULL,
+                'posterimage_style' => NULL
+            ),
+            'template' => 'theme/videojs',
+        )
+    );
+}
+
+function videojs_add($flag = FALSE) {
+
 }
 
 /**
  * Implements hook_field_info().
  */
 function loader_video_field_info() {
-  return array(
-    'field_loader_video' => array(
-      'label' => t('Video Player'),
-      'description' => t('field containing info about one of the layers part of the Rev Slider'),
-      'settings' => array('max_length' => 255),
-      'instance_settings' => array(
-        'text_processing' => 0,
-      ),
-      'default_widget' => 'field_loader_video_widget',
-      'default_formatter' => 'field_loader_video_formatter',
-    ),
-  );
+    return array(
+        'field_loader_video' => array(
+            'label' => t('Video Player'),
+            'description' => t('field containing info about one of the layers part of the Rev Slider'),
+            'settings' => array('max_length' => 255),
+            'instance_settings' => array(
+                'text_processing' => 0,
+            ),
+            'default_widget' => 'field_loader_video_widget',
+            'default_formatter' => 'videojs',
+        ),
+    );
 }
 
 /**
  * Implements hook_field_widget_info().
  */
 function loader_video_field_widget_info() {
-  return array(
-    'field_loader_video_widget' => array(
-      'label' => t('Revolution Slide Layer'),
-      'field types' => array('field_loader_video'),
-    ),
-  );
+    return array(
+        'field_loader_video_widget' => array(
+            'label' => t('Video Loader Widget'),
+            'field types' => array('field_loader_video'),
+        ),
+    );
 }
 
 /**
  * Implements hook_field_widget_form().
  */
 function loader_video_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
-  $element += array(
-    '#type' => $instance['widget']['type'],
-    '#default_value' => isset($items[$delta]) ? $items[$delta] : '',
-  );
-  return $element;
+    $widget = $element;
+    $widget['#delta'] = $delta;
+    switch ($instance['widget']['type']) {
+        case 'field_loader_video_widget' :
+            $widget['loader_video'] = array(
+                '#type' => 'fieldset',
+                '#title' => $element['#title'],
+                '#tree' => TRUE,
+            );
+            $widget['loader_video']['thumbnail'] = array(
+                '#title' => t('Thumbnail'),
+                '#type' => 'managed_file',
+                '#description' => t('Upload a file, allowed extensions: jpg, jpeg, png, gif'),
+                '#default_value' => isset($element['#value']['image']) ? $element['#value']['image'] : '',
+                '#upload_location' => 'public://' . LOADER_VIDEO_IMAGE_DEST . '/img',
+                '#states' => array(
+                    'visible' => array(
+//                ':input[title="content_choice_'.$element['#delta'].'"]' => array('value' => 'image'),
+                        ':input[name="content_choice[' . $element['#delta'] . ']"]' => array('value' => 'image'),
+                    ),
+                ),
+                '#upload_validators' => array(
+                    'file_validate_extensions' => array('jpg jpeg png gif'),
+                    // Pass the maximum file size in bytes
+                    'file_validate_size' => array(LOADER_IMAGE_MAX_SIZE_LIMIT_DS * 1024 * 1024),
+                ),
+                '#weight' => 1,
+            );
+            $widget['loader_video']['url'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Link Video'),
+                '#default_value' => isset($items[$delta]['url']) ? $items[$delta]['url'] : '',
+                '#required' => $element['#required'],
+                '#size' => 60,
+                '#attributes' => array('maxlength' => 500),
+                '#weight' => 2,
+            );
+            $widget['loader_video']['class'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Custom Class'),
+                '#default_value' => isset($items[$delta]['class']) ? $items[$delta]['class'] : '',
+                '#size' => 60,
+                '#attributes' => array('maxlength' => 500),
+                '#weight' => 3,
+            );
+            break;
+    }
+    dsm($widget);
+    return $widget;
 }
 
 /**
  * Implements hook_element_info().
  */
 function loader_video_element_info() {
-  $elements = array();
-  $elements['field_loader_video_widget'] = array(
-    '#input' => TRUE,
-    '#process' => array('rev_loader_player_field_process')
-  );
-  return $elements;
+//    $elements = array();
+//    $elements['field_loader_video_widget'] = array(
+//        '#input' => TRUE,
+//        '#process' => array('rev_loader_player_field_process')
+//    );
+//    return $elements;
 }
 
 function rev_loader_player_field_process($element, $form_state, $complete_form) {
-  $element['layer_header'] = array(
-    'layer_header' => array(
-      '#type' => 'markup',
-      '#weight' => 0,
-      '#markup' => '<p>' . t('Slide Layer ' . ($element['#delta'] + 1)) . '</p>',
-    ),
-  );
-  $element['image'] = array(
-    '#title' => t('Image'),
-    '#type' => 'managed_file',
-    '#weight' => 8,
-    '#description' => t('Upload a file, allowed extensions: jpg, jpeg, png, gif'),
-    '#default_value' => isset($element['#value']['image']) ? $element['#value']['image'] : '',
-    '#upload_location' => REV_SLIDER_DEST . '/img',
-    '#states' => array(
-      'visible' => array(
-//                ':input[title="content_choice_'.$element['#delta'].'"]' => array('value' => 'image'),
-        ':input[name="content_choice[' . $element['#delta'] . ']"]' => array('value' => 'image'),
-      ),
-    ),
-    '#upload_validators' => array(
-      'file_validate_extensions' => array('jpg jpeg png gif'),
-      // Pass the maximum file size in bytes
-      'file_validate_size' => array(MAX_SIZE_LIMIT_DS * 1024 * 1024),
-    ),
-
-  );
-  // To prevent an extra required indicator, disable the required flag on the
-  // base element since all the sub-fields are already required if desired.
-  $element['#required'] = FALSE;
-
-  return $element;
+//    $element['layer_header'] = array(
+//        'layer_header' => array(
+//            '#type' => 'markup',
+//            '#weight' => 0,
+//            '#markup' => '<p>' . t('Slide Layer ' . ($element['#delta'] + 1)) . '</p>',
+//        ),
+//    );
+//    $element['image'] = array(
+//        '#title' => t('Image'),
+//        '#type' => 'managed_file',
+//        '#weight' => 8,
+//        '#description' => t('Upload a file, allowed extensions: jpg, jpeg, png, gif'),
+//        '#default_value' => isset($element['#value']['image']) ? $element['#value']['image'] : '',
+//        '#upload_location' => REV_SLIDER_DEST . '/img',
+//        '#states' => array(
+//            'visible' => array(
+////                ':input[title="content_choice_'.$element['#delta'].'"]' => array('value' => 'image'),
+//                ':input[name="content_choice[' . $element['#delta'] . ']"]' => array('value' => 'image'),
+//            ),
+//        ),
+//        '#upload_validators' => array(
+//            'file_validate_extensions' => array('jpg jpeg png gif'),
+//            // Pass the maximum file size in bytes
+//            'file_validate_size' => array(MAX_SIZE_LIMIT_DS * 1024 * 1024),
+//        ),
+//
+//    );
+//    // To prevent an extra required indicator, disable the required flag on the
+//    // base element since all the sub-fields are already required if desired.
+//    $element['#required'] = FALSE;
+//
+//    return $element;
 }
 
 /**
  * Implements hook_field_is_empty().
  */
 function loader_video_field_is_empty($item, $field) {
-  return !isset($item);
+    return !isset($item);
+}
+
+/**
+ * Implements hook_field_settings_form().
+ */
+function loader_video_field_settings_form($field, $instance, $has_data) {
+    $settings = $field['settings'];
+    // Add your global settings fields here
+    $form = array();
+    return $form;
+}
+
+/**
+ * Implements hook_field_instance_settings_form().
+ */
+function loader_video_field_instance_settings_form($field, $instance) {
+    $settings = $instance['settings'];
+    // Add your instance settings fields here.
+    $form = array();
+    return $form;
+}
+
+/**
+ * Implements hook_field_presave().
+ */
+function loader_video_field_presave($entity_type, $entity, $field, $instance, $langcode, &$items) {
+    foreach ($items as $delta => $item) {
+        if (isset($item['loader_video']['url'])) {
+            $items[$delta]['thumbnail'] = $item['loader_video']['thumbnail'];
+            $items[$delta]['url'] = $item['loader_video']['url'];
+            $items[$delta]['class'] = $item['loader_video']['class'];
+        }
+    }
 }

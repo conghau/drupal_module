@@ -8,7 +8,7 @@
 
 function loader_video_field_schema($field) {
   $schema = array();
-  $schema['columns']['url'] = array(
+  $schema['columns']['uri'] = array(
     'type' => 'varchar',
     'length' => 50,
     'not null' => FALSE
@@ -33,7 +33,7 @@ function loader_video_field_schema($field) {
     ),
   );
   $schema['indexes'] = array(
-    'url' => array('url'),
+    'uri' => array('uri'),
   );
   return $schema;
 }

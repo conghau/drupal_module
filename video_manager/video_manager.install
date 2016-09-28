@@ -1,0 +1,172 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: hautruong
+ * Date: 28/09/2016
+ * Time: 11:03
+ */
+
+function video_manager_schema() {
+  $schema = array();
+
+  $schema ['vm_video_manager'] = array(
+    'description' => '',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'size' => 'big',
+        'description' => 'ID ',
+      ),
+      'unique_id' => array(
+        'description' => 'Unique ID',
+        'type' => 'varchar',
+        'length' => 255,
+      ),
+      'video_type' => array(
+        'description' => 'Video Type',
+        'type' => 'varchar',
+        'length' => 10,
+        'default' => 'video'
+      ),
+      'featured' => array(
+        'description' => 'Featured',
+        'type' => 'int',
+        'default' => 0
+      ),
+      'title' => array(
+        'description' => 'Title',
+        'type' => 'varchar',
+        'length' => 255,
+      ),
+      'uri' => array(
+        'description' => 'Url',
+        'type' => 'varchar',
+        'length' => 255,
+      ),
+      'description' => array(
+        'description' => 'Description',
+        'type' => 'text'
+      ),
+      'file' => array(
+        'description' => 'File',
+        'type' => 'varchar',
+        'length' => 255,
+      ),
+      'link' => array(
+        'description' => 'Link',
+        'type' => 'varchar',
+        'length' => 500,
+      ),
+      'embed' => array(
+        'description' => 'Embed',
+        'type' => 'text',
+      ),
+      'thumb' => array(
+        'description' => 'Thumb',
+        'type' => 'varchar',
+        'length' => 500,
+      ),
+      'ext_thumb' => array(
+        'description' => 'Ext Thumb',
+        'type' => 'varchar',
+        'length' => 500,
+      ),
+      'nsfw' => array(
+        'description' => 'NSFW',
+        'type' => 'int',
+        'length' => 1,
+        'default' => 0
+      ),
+      'votes' => array(
+        'description' => 'Votes',
+        'type' => 'int',
+        'default' => 0
+      ),
+      'views' => array(
+        'description' => 'Views',
+        'type' => 'int',
+        'default' => 0
+      ),
+      'tags' => array(
+        'description' => 'tags',
+        'type' => 'varchar',
+        'length' => 500,
+      ),
+      'approved' => array(
+        'description' => 'Approved',
+        'type' => 'int',
+        'length' => 1,
+        'default' => 0
+      ),
+      'likes' => array(
+        'description' => 'Likes',
+        'type' => 'int',
+        'default' => 0
+      ),
+      'dis_likes' => array(
+        'description' => 'dis likes',
+        'type' => 'int',
+        'default' => 0
+      ),
+      'comments' => array(
+        'description' => 'Comments',
+        'type' => 'int',
+        'default' => 0
+      ),
+      'source' => array(
+        'description' => 'Source',
+        'type' => 'varchar',
+        'length' => 255,
+      ),
+      'subscribe' => array(
+        'description' => 'subscribe',
+        'type' => 'int',
+        'default' => 0
+      ),
+      'duration' => array(
+        'description' => 'Duration',
+        'type' => 'int',
+        'default' => 0
+      ),
+      'created_at' => array(
+        'description' => 'Created At',
+        'type' => 'int',
+        'default' => 0
+      ),
+      'updated_at' => array(
+        'description' => 'Updated At',
+        'type' => 'int',
+        'default' => 0
+      ),
+      'created_by' => array(
+        'description' => 'Created By',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0
+      ),
+      'updated_by' => array(
+        'description' => 'Updated By',
+        'type' => 'int',
+        'length' => 50,
+        'not null' => FALSE,
+        'default' => 0
+      ),
+    ),
+    'indexes' => array(
+      'id' => array('id'),
+      'video_type' => array('video_type'),
+      'created_at' => array('created_at'),
+      'updated_at' => array('updated_at'),
+      'created_by' => array('created_by'),
+      'updated_by' => array('updated_by'),
+      'tags' => array('tags'),
+      'nsfw' => array('nsfw'),
+    ),
+    'primary key' => array('id'),
+    'unique keys' => array('unique_id' => array('unique_id'),)
+  );
+
+  return $schema;
+}

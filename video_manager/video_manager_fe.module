@@ -1,0 +1,38 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: hautruong
+ * Date: 29/09/2016
+ * Time: 15:14
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function video_manager_fe_menu() {
+  $items = array();
+
+  $items['vm/view/%/%'] = array(
+    'title' => 'View video',
+    'page callback' => 'vm_view_video_page',
+    'page arguments' => array(2, 3),
+    ///'access arguments' => array('access manage video'),
+    'access callback' => TRUE,
+    'file' => 'includes/video_manager_fe.page.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function video_manager_fe_theme($existing, $type, $theme, $path) {
+  return array(
+    'vm_block_fe_views_video' => array(
+      'variables' => array(),
+      'template' => 'themes/vm_block_fe_views_video'
+    ),
+  );
+}

@@ -57,11 +57,9 @@ function _vm_video_manager_form_submit_url(&$form) {
     '#collapsed' => FALSE
   );
   $form['guide'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('List of supported providers'),
+    '#type' => 'item',
     '#weight' => 3,
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE
+    '#markup' => theme('vm_block_guideline_import')
   );
 }
 

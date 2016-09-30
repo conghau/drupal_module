@@ -27,3 +27,16 @@ if (!function_exists('vm_get_value')) {
     return $default_value;
   }
 }
+
+if (!function_exists('vm_url')) {
+  /**
+   * Custom get url
+   * 
+   * @param string $path
+   * @param array $options
+   * @return string
+   */
+  function vm_url($path = '', $options = array('absolute' => TRUE)) {
+    return url($path, $options);
+  }
+}

@@ -6,7 +6,9 @@
  * Time: 15:11
  */
 ?>
-<div class="col-md-8 content video" id="vm_view_video">
+<div
+  class="<?php print variable_get('custom_class_for_view', 'col-md-12') ?> content video"
+  id="vm_view_video">
   <div class="video-player">
     <?php print vm_get_value($video, 'embed') ?>
   </div><!--/#video-player -->
@@ -80,48 +82,20 @@
                              data-data="[&quot;id&quot;:39, &quot;check&quot;:&quot;media&quot;]"><span
               class="fa fa-flag"></span></a></li>
 
-        <li class="right"><a href="#fav" id="this-addto"
-                             class="this-toggle toggle" data-target=".addto">Add
-            to</a></li>
-
-        <li class="right"><a href="#share" id="share" class="this-toggle toggle"
-                             data-target=".share_content">Share</a></li>
       </ul><!--/.share-->
       <hr>
-      <div class="addto this-hide">
-        <div class="row">
-          <div class="col-md-4">
-            <a href="#addto" id="this-addtofav" class="this-action this-tooltip"
-               data-content="Add to Favorite" data-action="addtofav"
-               data-data="[&quot;id&quot;:39, &quot;check&quot;:1]"><span
-                class="fa fa-heart"></span> Add to Favorite</a>
-          </div>
-          <div class="col-md-8">
-            <div class="panel panel-default" id="user-playlist">
-              <div class="panel-heading">
-                My Playlists
-              </div>
-              <div class="panel-body">
-                <ul id="playlists-list">
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <hr>
-      </div>
       <div class="share_content">
         <div class="panel-body">
           <div class="social-media">
             <a
-              href="http://www.facebook.com/sharer.php?u=http://dailimeo.com/view/lion-takes-a-bite-out-of-sports-car/MQgT2"
+              href="http://www.facebook.com/sharer.php?u=<?php print vm_url('vm/view/' . $video->slug . '/' . $video->unique_id) ?>"
               target="_blank" class="popup"><span class="fa fa-facebook"></span></a><a
               href="http://twitter.com/share?url=http://dailimeo.com/view/lion-takes-a-bite-out-of-sports-car/MQgT2&amp;text=Lion+takes+a+bite+out+of+sports+car"
               target="_blank" class="popup"><span class="fa fa-twitter"></span></a><a
-              href="https://plus.google.com/share?url=http://dailimeo.com/view/lion-takes-a-bite-out-of-sports-car/MQgT2"
+              href="https://plus.google.com/share?url=<?php print vm_url('vm/view/' . $video->slug . '/' . $video->unique_id) ?>"
               target="_blank" class="popup"><span
                 class="fa fa-google"></span></a><a
-              href="http://www.digg.com/submit?url=http://dailimeo.com/view/lion-takes-a-bite-out-of-sports-car/MQgT2"
+              href="http://www.digg.com/submit?url=<?php print vm_url('vm/view/' . $video->slug . '/' . $video->unique_id) ?>"
               target="_blank" class="popup"><span class="fa fa-digg"></span></a><a
               href="http://reddit.com/submit?url=http://dailimeo.com/view/lion-takes-a-bite-out-of-sports-car/MQgT2&amp;title=Lion+takes+a+bite+out+of+sports+car"
               target="_blank" class="popup"><span

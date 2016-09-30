@@ -44,10 +44,22 @@ function vm_video_manager_setting_form($form, &$form_state) {
     '#description' => t('Config for view FE.'),
     '#group' => 'setting_form'
   );
+  $form ['FE']['custom_class_for_view'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Custom Class For View'),
+    '#default_value' => variable_get('custom_class_for_view', 'col-md-12'),
+    '#group' => 'setting_form'
+  );
   $form ['FE']['allow_user_font_awesome'] = array(
     '#type' => 'checkbox',
     '#title' => t('Allow User Font Awesome'),
     '#default_value' => variable_get('allow_user_font_awesome', 1),
+    '#group' => 'setting_form'
+  );
+  $form ['FE']['allow_user_bootstrap'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Allow User Bootstrap'),
+    '#default_value' => variable_get('allow_user_bootstrap', 1),
     '#group' => 'setting_form'
   );
   $form ['FE']['path_of_file_custom_css'] = array(

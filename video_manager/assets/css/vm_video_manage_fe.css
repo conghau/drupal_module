@@ -1,1 +1,90 @@
-#vm_view_video
+.right {
+    float: right;
+}
+#vm_view_video .video-option ul.share {
+    border-top: 1px solid #e6e6e6;
+    height: 30px;
+    list-style: outside none none;
+    margin: 0;
+    width: 100%;
+}
+#vm_view_video .video-option ul.share li a {
+    border: 1px solid transparent;
+    color: #666;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 5px;
+    transition: all 0.15s linear 0s;
+}
+#vm_view_video #shorturl {
+    padding: 10px 0;
+}
+
+
+#vm_view_video .social-media {
+    margin-top: 10px;
+}
+#vm_view_video .social-media a.active .fa {
+    border-color: #01c8cf;
+    color: #01c8cf;
+}
+#vm_view_video .social-media .fa {
+    border-radius: 2px;
+    color: #fff;
+    font-size: 16px;
+    margin-right: 5px;
+    padding: 8px 12px;
+}
+#vm_view_video .social-media .fa:hover {
+    opacity: 0.8;
+}
+#vm_view_video .social-media .fa-thumbs-up,
+#vm_view_video .social-media .fa-chevron-up,
+#vm_view_video .social-media .fa-thumbs-down,
+#vm_view_video .social-media .fa-chevron-down {
+    background: transparent none repeat scroll 0 0;
+    border: 1px solid #999999;
+    color: #666666;
+}
+#vm_view_video .social-media .comments-trigger {
+    background: transparent none repeat scroll 0 0;
+    border: 1px solid #999999;
+    border-radius: 2px;
+    color: #666666;
+    display: inline-block;
+    margin-right: 5px;
+    padding: 8px 12px 6px;
+}
+#vm_view_video .social-media .comments-trigger .fa {
+    color: #666666;
+    margin-right: 5px;
+    padding: 0;
+}
+#vm_view_video .social-media .fa-facebook {
+    background: #3b5998 none repeat scroll 0 0;
+}
+#vm_view_video .social-media .fa-google {
+    background: #d34836 none repeat scroll 0 0;
+}
+#vm_view_video .social-media .fa-twitter {
+    background: #409dd5 none repeat scroll 0 0;
+}
+#vm_view_video .social-media .fa-reddit {
+    background: #dfe8f2 none repeat scroll 0 0;
+    color: #01c8cf;
+}
+#vm_view_video .social-media .fa-digg {
+    background: #efefef none repeat scroll 0 0;
+    color: #191919;
+}
+#vm_view_video .social-media .fa-linkedin {
+    background: #4875b4 none repeat scroll 0 0;
+}
+#vm_view_video .social-media .fa-stumbleupon {
+    background: #eb4923 none repeat scroll 0 0;
+    color: #fff;
+}
+#vm_view_video .social-media .fa-share-alt {
+    background: #191919 none repeat scroll 0 0;
+    color: #fff;
+}

@@ -43,3 +43,16 @@ function video_manager_fe_theme($existing, $type, $theme, $path) {
 function video_manager_fe_page_alter(&$page) {
   dsm($page);
 }
+
+function video_manager_fe_preprocess_page(&$variables) {
+  drupal_add_css(drupal_get_path('module', 'video_manager') . '/assets/css/vm_video_manage_fe.css');
+  if (1 === variable_get('allow_user_font_awesome', 1)) {
+    drupal_add_css(drupal_get_path('module', 'video_manager') . '/assets/font-awesome/css/font-awesome.min.css');
+  }
+  if (1 === variable_get('allow_user_bootstrap', 1)) {
+    drupal_add_css('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', array('type' => 'external'));
+    drupal_add_css('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css', array('type' => 'external'));
+    drupal_add_js('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', array('type' => 'external'));
+  }
+
+}

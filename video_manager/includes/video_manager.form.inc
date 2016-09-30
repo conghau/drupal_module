@@ -66,7 +66,6 @@ function _vm_video_manager_form_submit_url(&$form, &$form_state) {
     );
 }
 
-
 function _vm_video_manage_form_parser_url(&$form, &$form_state, $video_uri) {
     $import = new VMMedia(array(
         'yt_api' => 'AIzaSyAQ-fZygHMUNd_Jxqcq4OSLxBB14nnb3XI',
@@ -127,7 +126,6 @@ function _vm_video_manage_form_parser_url(&$form, &$form_state, $video_uri) {
         '#value' => t('Import Media'),
     );
 }
-
 
 function vm_video_import_form_submit($form, &$form_state) {
     $action_type = $form_state['triggering_element']['#name'];

@@ -40,7 +40,7 @@ function video_manager_menu() {
   );
 
   $items['video-manager/video/import'] = array(
-    'title' => 'Import video',
+    'title' => 'Import via URL',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('vm_video_import_form'),
     'access arguments' => array('access manage video'),
@@ -49,11 +49,20 @@ function video_manager_menu() {
   );
 
   $items['video-manager/video/import/%'] = array(
-    'title' => 'Import video',
+    'title' => 'Import via URL',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('vm_video_import_form'),
     'access arguments' => array('access manage video'),
     'file' => 'includes/video_manager.form.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/config/TCH/video_manager_setting'] = array(
+    'title' => 'Config Setting For Module Video Manager',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vm_video_manager_setting_form'),
+    'access arguments' => array('access manage video'),
+    'file' => 'includes/video_manager.admin.form.inc',
     'type' => MENU_CALLBACK,
   );
 
@@ -80,3 +89,46 @@ function video_manager_entity_info() {
   );
   return $entities;
 }
+
+/**
+ * Implements hook_theme().
+ */
+function video_manager_theme($existing, $type, $theme, $path) {
+  return array(
+    'vm_block_guideline_import' => array(
+      'variables' => array(),
+      'template' => 'themes/vm_block_guideline_import'
+    ),
+  );
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function video_manager_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'video_manager') . '/includes/views'
+  );
+}
+
+function video_manager_load_single($id) {
+  $entities = entity_load('vm_video_manager_entity', array($id));
+  return reset($entities);
+}
+
+function video_manager_load_first_by($field_name, $value, $operator = '=') {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'vm_video_manager_entity')
+    ->propertyCondition($field_name, $value, $operator)
+    ->range(0, 1);
+
+  $result = $query->execute();
+
+  if (isset($result['vm_video_manager_entity'])) {
+    $ids = array_keys($result['vm_video_manager_entity']);
+    return video_manager_load_single($ids[0]);
+  }
+  return new stdClass();
+}
+

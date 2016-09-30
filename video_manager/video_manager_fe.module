@@ -1,0 +1,58 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: hautruong
+ * Date: 29/09/2016
+ * Time: 15:14
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function video_manager_fe_menu() {
+  $items = array();
+
+  $items['vm/view/%/%'] = array(
+    'title' => 'View video',
+    'page callback' => 'vm_view_video_page',
+    'page arguments' => array(2, 3),
+    ///'access arguments' => array('access manage video'),
+    'access callback' => TRUE,
+    'file' => 'includes/video_manager_fe.page.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function video_manager_fe_theme($existing, $type, $theme, $path) {
+  return array(
+    'vm_block_fe_views_video' => array(
+      'variables' => array(),
+      'template' => 'themes/vm_block_fe_views_video'
+    ),
+  );
+}
+
+/**
+ * Implements hook_page_alter().
+ */
+function video_manager_fe_page_alter(&$page) {
+  dsm($page);
+}
+
+function video_manager_fe_preprocess_page(&$variables) {
+  drupal_add_css(drupal_get_path('module', 'video_manager') . '/assets/css/vm_video_manage_fe.css');
+  if (1 === variable_get('allow_user_font_awesome', 1)) {
+    drupal_add_css(drupal_get_path('module', 'video_manager') . '/assets/font-awesome/css/font-awesome.min.css');
+  }
+  if (1 === variable_get('allow_user_bootstrap', 1)) {
+    drupal_add_css('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', array('type' => 'external'));
+    drupal_add_css('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css', array('type' => 'external'));
+    drupal_add_js('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', array('type' => 'external'));
+  }
+
+}

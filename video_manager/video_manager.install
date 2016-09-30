@@ -40,6 +40,11 @@ function video_manager_schema() {
         'type' => 'varchar',
         'length' => 255,
       ),
+      'slug' => array(
+        'description' => 'Slug',
+        'type' => 'varchar',
+        'length' => 255,
+      ),
       'uri' => array(
         'description' => 'Url',
         'type' => 'varchar',
@@ -156,6 +161,7 @@ function video_manager_schema() {
     ),
     'indexes' => array(
       'id' => array('id'),
+      'slug' => array('slug'),
       'video_type' => array('video_type'),
       'created_at' => array('created_at'),
       'updated_at' => array('updated_at'),

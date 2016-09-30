@@ -34,7 +34,7 @@ class VMMedia {
    * @param string $error_message
    * @return object
    */
-  public function import($uri, $width = 500, $height = 480, &$error_message='') {
+  public function import($uri, $width = 500, $height = 480, &$error_message = '') {
     // Clean URL
     $uri = VMUtil::clean($uri, 3, TRUE);
     // Valid URL
@@ -120,6 +120,80 @@ class VMMedia {
       $this->data->dis_likes =$json->items[0]->statistics->dislikeCount;
       $this->data->comments =$json->items[0]->statistics->commentCount;
 
+
+  }
+
+  public function import_vimeo() {
+
+  }
+
+  public function import_youku() {
+
+  }
+
+  public function import_vine() {
+
+  }
+
+  public function import_twitch() {
+
+  }
+
+  public function import_soundcloud() {
+    $file = @VMUtil::http("http://soundcloud.com/oembed?url={$this->uri}&format=json");
+    $array = json_decode($file, TRUE);
+    if (!$array) {
+      return array("error" => "Sorry this video cannot be accessed for some reason.");
+    }
+    preg_match('|<iframe [^>]*(src="[^"]+")[^>]*|', $array['html'], $embed);
+
+    $this->data->id = NULL;
+    $this->data->title = $array['title'];
+    $this->data->slug = VMUtil::slug($this->data->title);
+    $this->data->desc = $array['description'];
+    $this->data->tag = '';
+    $this->data->thumb = $array['thumbnail_url'];
+    $this->data->size = $this->size($this->data->thumb);
+    $this->data->src = str_replace('"', '', str_replace('src=', '', $embed[1]));
+  }
+
+  public function import_metacafe() {
+
+  }
+
+  public function import_funnyordie() {
+
+  }
+
+  public function import_dailymotion() {
+    $url = parse_url($this->uri);
+    $id = str_replace('/video/', '', $url['path']);
+    $id = explode('_', $id);
+    $this->data->id = $id[0];
+    $dm = VMUtil::http("https://api.dailymotion.com/video/{$this->data->id}?fields=title,description,embed_html,thumbnail_large_url,tag,allow_embed");
+    if (!$dm) {
+      return array("error" => "Sorry this video cannot be accessed for some reason.");
+    }
+    $dm = json_decode($dm);
+    if ($dm->allow_embed == FALSE) {
+      return array("error" => "Sorry this video cannot be embedded because the author or the publisher prevented it.");
+    }
+    $this->data->title = $dm->title;
+    $this->data->slug = VMUtil::slug($this->data->title);
+    $this->data->desc = strip_tags($dm->description);
+    $this->data->src = "//www.dailymotion.com/embed/video/{$this->data->id}";
+    $this->data->thumb = $dm->thumbnail_large_url;
+    $this->data->size = $this->size($this->data->thumb);
+    $this->data->tag = $dm->tag;
+    $this->data->tag = @implode(',', $this->data->tag);
+    $this->data->import = 'Dailymotion';
+  }
+
+  public function import_collegehumor() {
+
+  }
+
+  public function import_break() {
 
   }
 

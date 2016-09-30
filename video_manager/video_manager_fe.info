@@ -1,5 +1,5 @@
-name = Module video manager
-description = Module video manager
+name = Module video manager views Front End
+description = Module video views video in front end - child module of video_manager
 package = TCH modules
 core = 7.x
 
@@ -14,7 +14,4 @@ scripts[] = assets/js/jquery.tagsinput.min.js
 scripts[] = assets/js/vm_video_manager.js
 
 stylesheets[all][] = assets/css/jquery.tagsinput.min.css
-
-files[] = includes/video_manager.util.inc
-files[] = includes/video_manager.media.inc
-files[] = includes/views/video_manager.views_controller.inc
+stylesheets[all][] = video_manager/assets/css/vm_video_manage_fe.min.css

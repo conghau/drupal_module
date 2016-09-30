@@ -89,7 +89,7 @@ function video_manager_schema() {
         'type' => 'int',
         'default' => 0
       ),
-      'tags' => array(
+      'tag' => array(
         'description' => 'tags',
         'type' => 'varchar',
         'length' => 500,

@@ -115,6 +115,11 @@ class VMMedia {
     $this->data->tag = @implode(',', $json->items[0]->snippet->tags);
     $this->data->src = "//www.youtube-nocookie.com/embed/$id?showinfo=0&rel=0&iv_load_policy=3&modestbranding=1";
     $this->data->import = "Youtube";
+      $this->data->views = $json->items[0]->statistics->viewCount;
+      $this->data->likes = $json->items[0]->statistics->likeCount;
+      $this->data->dis_likes =$json->items[0]->statistics->dislikeCount;
+      $this->data->comments =$json->items[0]->statistics->commentCount;
+
 
   }
 

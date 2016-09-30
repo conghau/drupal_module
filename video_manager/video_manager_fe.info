@@ -14,3 +14,4 @@ scripts[] = assets/js/jquery.tagsinput.min.js
 scripts[] = assets/js/vm_video_manager.js
 
 stylesheets[all][] = assets/css/jquery.tagsinput.min.css
+stylesheets[all][] = assets/css/vm_video_manage_fe.min.css

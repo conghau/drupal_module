@@ -36,3 +36,10 @@ function video_manager_fe_theme($existing, $type, $theme, $path) {
     ),
   );
 }
+
+/**
+ * Implements hook_page_alter().
+ */
+function video_manager_fe_page_alter(&$page) {
+  dsm($page);
+}

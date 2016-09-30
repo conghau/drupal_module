@@ -57,6 +57,15 @@ function video_manager_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['admin/config/TCH/video_manager_setting'] = array(
+    'title' => 'Config Setting For Module Video Manager',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vm_video_manager_setting_form'),
+    'access arguments' => array('access manage video'),
+    'file' => 'includes/video_manager.admin.form.inc',
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 

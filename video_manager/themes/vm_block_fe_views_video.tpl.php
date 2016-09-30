@@ -6,7 +6,7 @@
  * Time: 15:11
  */
 ?>
-<div class="col-md-8 content video">
+<div class="col-md-8 content video" id="vm_view_video">
   <div class="video-player">
     <?php print vm_get_value($video, 'embed') ?>
   </div><!--/#video-player -->

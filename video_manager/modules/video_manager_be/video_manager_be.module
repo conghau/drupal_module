@@ -1,0 +1,77 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: HAUTRUONG
+ * Date: 9/30/2016
+ * Time: 4:30 PM
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function video_manager_be_permission() {
+}
+
+/**
+ * Implements hook_menu().
+ */
+function video_manager_be_menu() {
+    $items = array();
+
+    $items['video-manager/video/add'] = array(
+        'title' => 'Add video',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('vm_video_add_form'),
+        'access arguments' => array('access manage video'),
+        'file' => 'includes/video_manager_be.form.inc',
+        'type' => MENU_CALLBACK,
+    );
+
+    $items['video-manager/video/import'] = array(
+        'title' => 'Import via URL',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('vm_video_import_form'),
+        'access arguments' => array('access manage video'),
+        'file' => 'includes/video_manager_be.form.inc',
+        'type' => MENU_CALLBACK,
+    );
+
+    $items['video-manager/video/import/%'] = array(
+        'title' => 'Import via URL',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('vm_video_import_form'),
+        'access arguments' => array('access manage video'),
+        'file' => 'includes/video_manager_be.form.inc',
+        'type' => MENU_CALLBACK,
+    );
+
+    return $items;
+}
+
+/**
+ * Implements hook_entity_info().
+ */
+function video_manager_be_entity_info() {
+}
+
+/**
+ * Implements hook_theme().
+ */
+function video_manager_be_theme($existing, $type, $theme, $path) {
+    return array(
+        'vm_block_guideline_import' => array(
+            'variables' => array(),
+            'template' => 'themes/vm_block_guideline_import'
+        ),
+    );
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function video_manager_be_views_api() {
+    return array(
+        'api' => 3,
+        'path' => drupal_get_path('module', 'video_manager_be') . '/includes/views'
+    );
+}

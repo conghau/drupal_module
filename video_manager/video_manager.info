@@ -18,3 +18,4 @@ stylesheets[all][] = assets/css/jquery.tagsinput.min.css
 files[] = includes/video_manager.util.inc
 files[] = includes/video_manager.media.inc
 files[] = includes/views/video_manager.views_controller.inc
+files[] = includes/video_manager.controller.inc

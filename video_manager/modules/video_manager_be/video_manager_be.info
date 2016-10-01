@@ -1,0 +1,13 @@
+name = Module video manager views Back End
+description = Module video views video in back end - child module of video_manager
+package = TCH modules
+core = 7.x
+
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "TCH"
+
+dependencies[] = views
+dependencies[] = video_manager
+
+stylesheets[all][] = assets/css/jquery.tagsinput.min.css

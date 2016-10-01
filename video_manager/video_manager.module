@@ -30,33 +30,6 @@ function video_manager_permission() {
 function video_manager_menu() {
   $items = array();
 
-  $items['video-manager/video/add'] = array(
-    'title' => 'Add video',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('vm_video_add_form'),
-    'access arguments' => array('access manage video'),
-    'file' => 'includes/video_manager.form.inc',
-    'type' => MENU_CALLBACK,
-  );
-
-  $items['video-manager/video/import'] = array(
-    'title' => 'Import via URL',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('vm_video_import_form'),
-    'access arguments' => array('access manage video'),
-    'file' => 'includes/video_manager.form.inc',
-    'type' => MENU_CALLBACK,
-  );
-
-  $items['video-manager/video/import/%'] = array(
-    'title' => 'Import via URL',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('vm_video_import_form'),
-    'access arguments' => array('access manage video'),
-    'file' => 'includes/video_manager.form.inc',
-    'type' => MENU_CALLBACK,
-  );
-
   $items['admin/config/TCH/video_manager_setting'] = array(
     'title' => 'Config Setting For Module Video Manager',
     'page callback' => 'drupal_get_form',
@@ -78,7 +51,7 @@ function video_manager_entity_info() {
   $entities['vm_video_manager_entity'] = array(
     'label' => t('Video Manager Entity'),
     'base table' => 'vm_video_manager',
-    'controller class' => 'EntityAPIController',
+    'controller class' => 'VMEntityController',
     'entity class' => 'Entity',
     'fieldable' => TRUE,
     'entity keys' => array(

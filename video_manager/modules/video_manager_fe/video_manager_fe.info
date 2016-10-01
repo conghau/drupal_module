@@ -7,8 +7,7 @@ version = "7.x-1.x-dev"
 core = "7.x"
 project = "TCH"
 
-dependencies[] = entity
-dependencies[] = views
+dependencies[] = video_manager
 
 scripts[] = assets/js/jquery.tagsinput.min.js
 scripts[] = assets/js/vm_video_manager.js

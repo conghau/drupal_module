@@ -48,7 +48,7 @@ function video_manager_schema() {
       'uri' => array(
         'description' => 'Url',
         'type' => 'varchar',
-        'length' => 255,
+        'length' => 500,
       ),
       'description' => array(
         'description' => 'Description',
@@ -57,7 +57,7 @@ function video_manager_schema() {
       'file' => array(
         'description' => 'File',
         'type' => 'varchar',
-        'length' => 255,
+        'length' => 500,
       ),
       'link' => array(
         'description' => 'Link',
@@ -167,11 +167,11 @@ function video_manager_schema() {
       'updated_at' => array('updated_at'),
       'created_by' => array('created_by'),
       'updated_by' => array('updated_by'),
-      'tags' => array('tags'),
+      'tag' => array('tag'),
       'nsfw' => array('nsfw'),
     ),
     'primary key' => array('id'),
-    'unique keys' => array('unique_id' => array('unique_id'),)
+    'unique keys' => array('unique_id' => array('unique_id'))
   );
 
   return $schema;

@@ -107,7 +107,7 @@ class VMMedia {
 
     $this->data->title = $json->items[0]->snippet->title;
     $this->data->slug = VMUtil::slug($this->data->title);
-    $this->data->id = $id;
+    $this->data->unique_id = $id;
     $this->data->duration = $seconds;
     $this->data->description = VMUtil::clean($json->items[0]->snippet->description, 3, TRUE);
     $this->data->thumb = "http://img.youtube.com/vi/$id/hqdefault.jpg";

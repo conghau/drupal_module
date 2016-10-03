@@ -38,6 +38,17 @@ function video_manager_fe_theme($existing, $type, $theme, $path) {
 }
 
 /**
+ * Implements hook_views_api().
+ */
+function video_manager_fe_views_api() {
+    return array(
+        'api' => 3,
+        'path' => drupal_get_path('module', 'video_manager_fe') . '/includes/views',
+        'template path' => drupal_get_path('module', 'video_manager_fe') . '/includes/views/themes',
+    );
+}
+
+/**
  * Implements hook_page_alter().
  */
 function video_manager_fe_page_alter(&$page) {

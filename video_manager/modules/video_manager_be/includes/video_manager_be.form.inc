@@ -18,11 +18,20 @@ function vm_video_add_form($form, &$form_state) {
     return $form;
 }
 
+
+/**
+ * Init form import video via url
+ *
+ * @param $form
+ * @param $form_state
+ *
+ * @return mixed
+ */
 function vm_video_import_form($form, &$form_state) {
     $video_uri = isset($_GET['video_uri']) ? $_GET['video_uri'] : '';
 
-    if ('' === $video_uri) {
-        _vm_video_manager_form_submit_url($form, $form_state);
+    if (!VMUtil::is_url($video_uri)) {
+        _vm_video_manager_form_send_url($form, $form_state);
         return $form;
     }
     _vm_video_manage_form_parser_url($form, $form_state, $video_uri);
@@ -30,11 +39,17 @@ function vm_video_import_form($form, &$form_state) {
 
 }
 
-function _vm_video_manager_form_submit_url(&$form, &$form_state) {
+/**
+ * Build element for case send url
+ *
+ * @param $form
+ * @param $form_state
+ */
+function _vm_video_manager_form_send_url(&$form, &$form_state) {
     $form['video_uri'] = array(
         '#type' => 'textfield',
         '#title' => t('URL'),
-        '#default_value' => '',
+        '#default_value' => vm_get_value($form_state, 'video_uri', ''),
         '#description' => t('URL to the video (including http://)'),
         '#required' => TRUE,
         '#weight' => 1,
@@ -58,14 +73,19 @@ function _vm_video_manager_form_submit_url(&$form, &$form_state) {
         '#collapsed' => FALSE
     );
     $form['guide'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('List of supported providers'),
+        '#type' => 'item',
+        '#markup' => theme('vm_block_guideline_import'),
         '#weight' => 3,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE
     );
 }
 
+/**
+ * Build form element for key parser url from $_GET
+ *
+ * @param $form
+ * @param $form_state
+ * @param $video_uri
+ */
 function _vm_video_manage_form_parser_url(&$form, &$form_state, $video_uri) {
     $import = new VMMedia(array(
         'yt_api' => 'AIzaSyAQ-fZygHMUNd_Jxqcq4OSLxBB14nnb3XI',
@@ -77,7 +97,7 @@ function _vm_video_manage_form_parser_url(&$form, &$form_state, $video_uri) {
         drupal_set_message($error_message, 'error');
         drupal_goto('video-manager/video/import');
     }
-
+    dsm($media);
     $entity = entity_create('vm_video_manager_entity', (array)$media);
     $form_state['vm_entity'] = $entity;
 
@@ -122,24 +142,39 @@ function _vm_video_manage_form_parser_url(&$form, &$form_state, $video_uri) {
         '#markup' => '<img src="' . vm_get_value($media, 'thumb', '') . '" width=180 />',
     );
 
-    $form['action']['import'] = array(
+    $form['action']['save'] = array(
         '#type' => 'submit',
-        '#name' => 'import_media',
+        '#name' => 'save_media',
         '#value' => t('Import Media'),
     );
 }
 
+function vm_video_import_form_validate($form, &$form_state) {
+    $action_type = $form_state['triggering_element']['#name'];
+    switch ($action_type) {
+        case 'save_media':
+            break;
+        default:
+            $video_uri = vm_get_value($form_state['values'], 'video_uri', '');
+            if (!VMUtil::is_url($video_uri)) {
+                form_set_error('video_uri', t('URL is invalid'));
+            }
+    }
+}
+
+/**
+ * Form submit
+ *
+ * @param $form
+ * @param $form_state
+ */
 function vm_video_import_form_submit($form, &$form_state) {
     $action_type = $form_state['triggering_element']['#name'];
     switch ($action_type) {
-        case 'import_media':
-            drupal_set_message('Processing save');
-            $target_field_save = array();
-            global $user;
+        case 'save_media':
             $entity = $form_state['vm_entity'];
-            $entity->created_by = $user->uid;
             entity_form_submit_build_entity('vm_video_manager_entity', $entity, $form, $form_state);
-
+            dsm($entity);
             $result = entity_save('vm_video_manager_entity', $entity);
 
             if ($result) {

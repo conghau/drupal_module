@@ -23,20 +23,10 @@
             content="<?php print vm_get_value($video, 'description') ?>">
       <meta itemprop="thumbnailUrl"
             content="<?php print vm_get_value($video, 'thumb') ?>">
-      <meta itemprop="embedURL" content="http://dailimeo.com/embed/MQgT2">
+      <meta itemprop="embedURL" content="<?php vm_url("embed/$video->unique_id")?>">
       <div class="row">
         <div class="col-xs-8 col-md-9">
           <div class="video-author" data-id="1">
-            <!-- Author Scheme -->
-                  <span itemprop="author" itemscope=""
-                        itemtype="http://schema.org/Person">
-                    <meta itemprop="url"
-                          content="http://dailimeo.com/user/dailimeo">
-                    <meta itemprop="image"
-                          content="http://dailimeo.com/content/user/AgEgijgg_avatar.jpg">        
-                    <meta itemprop="name" content="Dailimeo">
-                  </span>
-            <!-- Author Scheme -->
             <a href="http://dailimeo.com/user/dailimeo" title="Dailimeo"><img
                 src="http://dailimeo.com/content/user/AgEgijgg_avatar.jpg"
                 alt="Dailimeo" class="video-author-avatar"></a>
@@ -109,7 +99,7 @@
             <div class="row">
               <div class="col-sm-8">
                 <input class="form-control this-select" id="shortlink"
-                       value="http://dailimeo.com/view/lion-takes-a-bite-out-of-sports-car/MQgT2"
+                       value="<?php print vm_url("/vm/view/$video->slug/$video->unique_id")?>"
                        type="text">
               </div>
               <div class="col-sm-4 text-right">
@@ -124,7 +114,7 @@
             </div>
           </div>
           <div id="embed" class="this-hide">
-            <textarea class="form-control this-select" id="embed-code" rows="4">&lt;iframe src='http://dailimeo.com/embed/MQgT2' frameborder='0' width='550' height='350' scrolling='no' allowfullscreen&gt;&lt;/iframe&gt;&lt;p&gt;&lt;a style='color: #000; text-decoration: none;' href='http://dailimeo.com/view/lion-takes-a-bite-out-of-sports-car/MQgT2' title='Lion takes a bite out of sports car'&gt;Lion takes a bite out of sports car&lt;/a&gt;&lt;/p&gt;</textarea>
+            <textarea class="form-control this-select" id="embed-code" rows="4">&lt;iframe src='<?php print vm_url("/view/$video->slug/$video->unique_id")?>' frameborder='0' width='550' height='350' scrolling='no' allowfullscreen&gt;&lt;/iframe&gt;&lt;p&gt;&lt;a style='color: #000; text-decoration: none;' href='<?php print vm_url("/view/$video->slug/$video->unique_id")?>' title='<?php print vm_get_value($video, 'title','')?>'&gt;Lion takes a bite out of sports car&lt;/a&gt;&lt;/p&gt;</textarea>
             <select id="predefined-size">
               <option value="550x350">550x350</option>
               <option value="650x450">650x450</option>
@@ -155,7 +145,7 @@
                 href="http://dailimeo.com/search/Sports+Car+%28Automotive+Class%29"
                 class="btn btn-info video-tag"><?php print vm_get_value($video, 'tag') ?></a>
               <a href="http://dailimeo.com/search/Lion+%28Animal%29"
-                 class="btn btn-info video-tag">Lion (Animal)</a></p></div>
+                 class="btn btn-info video-tag"><?php print vm_get_value($video,'tag','')?></a></p></div>
         </div>
       </div>
       <a style="display: none;" href="#" class="toggle-description">View

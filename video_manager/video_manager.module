@@ -80,16 +80,33 @@ function video_manager_theme($existing, $type, $theme, $path) {
  */
 function video_manager_views_api() {
   return array(
-    'api' => 3,
-    'path' => drupal_get_path('module', 'video_manager') . '/includes/views'
+      'api' => 3,
+      'path' => drupal_get_path('module', 'video_manager') . '/includes/views',
+      'template path' => drupal_get_path('module', 'video_manager') . '/includes/views/themes',
   );
 }
 
+/**
+ * Load single record by id
+ *
+ * @param $id
+ *
+ * @return mixed
+ */
 function video_manager_load_single($id) {
   $entities = entity_load('vm_video_manager_entity', array($id));
   return reset($entities);
 }
 
+/**
+ * Load single record by field
+ *
+ * @param $field_name
+ * @param $value
+ * @param string $operator
+ *
+ * @return mixed|stdClass
+ */
 function video_manager_load_first_by($field_name, $value, $operator = '=') {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'vm_video_manager_entity')

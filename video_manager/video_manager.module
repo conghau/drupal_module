@@ -29,14 +29,23 @@ function video_manager_permission() {
  */
 function video_manager_menu() {
   $items = array();
+    $items['admin/config/TCH'] = array(
+        'title' => 'TCH Project',
+        'description' => 'Config for TCH project',
+        'position' => 'left',
+        'weight' => -25,
+        'page callback' => 'system_admin_menu_block_page',
+        'access arguments' => array('access administration pages'),
+        'file' => 'system.admin.inc',
+        'file path' => drupal_get_path('module', 'system'),
 
+    );
   $items['admin/config/TCH/video_manager_setting'] = array(
-    'title' => 'Config Setting For Module Video Manager',
+    'title' => 'Video Manager',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('vm_video_manager_setting_form'),
     'access arguments' => array('access manage video'),
     'file' => 'includes/video_manager.admin.form.inc',
-    'type' => MENU_CALLBACK,
   );
 
   return $items;

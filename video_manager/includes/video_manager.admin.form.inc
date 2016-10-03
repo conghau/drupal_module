@@ -58,7 +58,13 @@ function vm_video_manager_setting_form($form, &$form_state) {
         '#default_value' => variable_get('number_item_for_row_list_fe_mobile', 3),
         '#group' => 'setting_form'
     );
-
+    $form ['FE']['number_row_for_list_fe_desktop'] = array(
+        '#type' => 'select',
+        '#title' => t('Number row for screen desktop'),
+        '#options' => array('1' => t('1 item'), '2' => t('2 item'), '3' => t('3 item'), '4' => t('4 item')),
+        '#default_value' => variable_get('number_row_for_list_fe_desktop', 3),
+        '#group' => 'setting_form'
+    );
     $form ['FE']['custom_class_for_view'] = array(
         '#type' => 'textfield',
         '#title' => t('Custom Class For View'),

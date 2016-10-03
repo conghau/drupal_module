@@ -30,11 +30,10 @@
  *
  * @ingroup views_templates
  */
-dsm($fields);
 ?>
 <div class="video-thumb">
-    <img src="<?php print vm_get_value(vm_get_value($fields, 'thumb'), 'raw') ?>">
+    <img src="<?php print vm_get_value($fields, 'thumb.raw') ?>">
 </div>
 <div class="video-content">
-    <a href="<?= vm_url('/vm/view/' . vm_get_value(vm_get_value($fields, 'slug'), 'raw') . '/' . vm_get_value(vm_get_value($fields, 'unique_id'), 'raw')) ?>" class="vm-ui-ellipsis"><?php print vm_get_value(vm_get_value($fields, 'title'), 'raw') ?></a>
+    <a href="<?= vm_url('/vm/view/' . vm_get_value($fields, 'slug.raw') . '/' . vm_get_value($fields, 'unique_id.raw')) ?>" class="vm-ui-ellipsis"><?php print vm_get_value($fields, 'title.raw') ?></a>
 </div>
